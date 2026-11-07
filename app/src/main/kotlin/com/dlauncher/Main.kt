@@ -2,7 +2,6 @@ package com.dlauncher
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -12,11 +11,11 @@ import com.dlauncher.ui.navigation.AppNavigation
 import com.dlauncher.ui.theme.DLauncherTheme
 
 fun main() = application {
-    val windowState = rememberWindowState(width = 1280.dp, height = 800.dp)
-    
+    val windowState = rememberWindowState(width = 1360.dp, height = 860.dp)
+
     Window(
         onCloseRequest = ::exitApplication,
-        title = "D Launcher - Minecraft Java Edition",
+        title = "D Launcher Plus — Minecraft Java Edition",
         state = windowState
     ) {
         DLauncherTheme {
