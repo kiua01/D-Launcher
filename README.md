@@ -1,103 +1,99 @@
 # D-Launcher
 
-**D Launcher** — A modern, beautiful Minecraft Java Edition launcher built **from scratch**.
+**D Launcher Plus** — A modern Minecraft Java Edition launcher built **from scratch**.
 
-Inspired by the polished UI of O Launcher Plus / CS Launcher Plus (the screenshots you provided).
+Inspired by the polished UI of O Launcher Plus / CS Launcher Plus.
+
+[![Build](https://github.com/kiua01/D-Launcher/actions/workflows/build.yml/badge.svg)](https://github.com/kiua01/D-Launcher/actions/workflows/build.yml)
 
 ## Tech Stack
 
-| Layer              | Technology                          | Why |
-|--------------------|-------------------------------------|-----|
-| **UI**             | Kotlin + Jetpack Compose Desktop   | Beautiful, declarative, native performance, perfect for the 100% matching modern UI |
-| **Core Logic**     | Kotlin Multiplatform / JVM         | Shared business logic, version management, account handling |
-| **Performance / Native** | Rust (via UniFFI / JNI)        | Fast file I/O, downloads, hashing, process management |
-| **Game Launch**    | Java (subprocess + classpath)      | Official way Minecraft expects to be launched |
-| **Auth**           | Microsoft OAuth2 + Xbox Live        | Proper online accounts + offline support |
-| **Mod Support**    | Fabric / Forge / Quilt loaders     | Full modding ecosystem |
+| Layer | Technology | Why |
+|-------|------------|-----|
+| **UI** | Kotlin + Jetpack Compose Desktop | Beautiful declarative UI matching the screenshots |
+| **Core** | Kotlin (JVM) | Auth, versions, instances, launching |
+| **Native performance** | Rust | Fast downloads, hashing, file ops |
+| **Game process** | Java | Official Minecraft launch |
 
-## Planned Features (matching the screenshots)
+## Features (UI)
 
-- **Home** – Hero banner ("The End awaits..."), Play Now, Featured News, What's New
-- **Installations** – Multiple instances / profiles
-- **Skins** – Skin browser & editor
-- **Marketplace / Mod Store** – Browse, search, install mods (CurseForge / Modrinth integration)
-- **File Manager** – Full Minecraft directory browser (`.minecraft`, mods, resourcepacks, shaderpacks, screenshots, etc.)
-- **Account** – Offline Account + Microsoft Account (recommended)
-- **Settings** – General, Minecraft, Performance, Downloads, Launcher Appearance, Experimental, Control Customization
-- **Realms** support
-- Beautiful Nether-themed backgrounds & glassmorphism UI
+- Home with hero banner (“The End awaits…”), Featured News, What’s New, Quick Links, Realms
+- Account Type selection (Offline + Microsoft)
+- File Manager with left navigation + grid
+- Marketplace / Mod Store with categories and install buttons
+- Settings with categorized cards
+- Top bar with search, notifications, user chip
+- Sidebar navigation
+
+## Build with GitHub Actions
+
+The project has a full **GitHub Actions** workflow (`.github/workflows/build.yml`).
+
+- Triggers on every push to `main` and on Pull Requests
+- Builds on **Ubuntu**, **Windows** and **macOS**
+- Tries to produce native packages (Deb / MSI / DMG) or falls back to Uber JAR
+- You can also run it manually: **Actions → Build D-Launcher → Run workflow**
+
+After a successful run you can download the artifacts from the Actions page.
+
+## Local Development
+
+### Prerequisites
+- JDK 21+
+- (Optional) Rust for the native core
+
+```bash
+git clone https://github.com/kiua01/D-Launcher.git
+cd D-Launcher
+./gradlew :app:run          # Linux / macOS
+# or
+.\gradlew.bat :app:run      # Windows
+```
+
+To create a distributable package:
+
+```bash
+./gradlew :app:packageUberJarForCurrentOS
+# or platform specific: packageDeb / packageMsi / packageDmg
+```
 
 ## Project Structure
 
 ```
 D-Launcher/
-├── app/                          # Compose Desktop application
-│   └── src/main/kotlin/
-│       └── com/dlauncher/
-│           ├── Main.kt
-│           ├── ui/
-│           │   ├── theme/
-│           │   ├── screens/
-│           │   │   ├── HomeScreen.kt
-│           │   │   ├── AccountScreen.kt
-│           │   │   ├── FileManagerScreen.kt
-│           │   │   ├── MarketplaceScreen.kt
-│           │   │   ├── SettingsScreen.kt
-│           │   │   └── ...
-│           │   └── components/
-│           └── navigation/
-├── core/                         # Shared Kotlin logic
-│   └── src/main/kotlin/
-│       └── com/dlauncher/core/
-│           ├── auth/
-│           ├── version/
-│           ├── instance/
-│           ├── download/
-│           └── launch/
-├── rust-core/                    # High-performance Rust library
-│   ├── Cargo.toml
-│   └── src/
-│       ├── lib.rs
-│       ├── download.rs
-│       ├── hash.rs
-│       └── fs.rs
+├── app/                     # Compose Desktop UI
+│   └── src/main/kotlin/com/dlauncher/
+│       ├── Main.kt
+│       └── ui/
+│           ├── theme/
+│           ├── navigation/
+│           ├── screens/     # Home, Account, FileManager, Marketplace, Settings
+│           └── components/
+├── core/                    # Shared Kotlin logic
+├── core-rust/               # High-performance Rust library
+├── .github/workflows/       # CI that builds everything
 ├── gradle/
-├── build.gradle.kts
-├── settings.gradle.kts
+├── gradlew / gradlew.bat
 └── README.md
-```
-
-## Getting Started (Development)
-
-### Prerequisites
-- JDK 21+
-- Kotlin 2.0+
-- Rust (stable)
-- Android Studio / IntelliJ IDEA with Compose plugin (recommended)
-
-### Build & Run
-
-```bash
-./gradlew :app:run
 ```
 
 ## Roadmap
 
-1. **Phase 1** – UI skeleton matching every screen from the provided screenshots (Home, Account, File Manager, Marketplace, Settings)
-2. **Phase 2** – Offline account + basic instance creation + game launch (vanilla)
-3. **Phase 3** – Microsoft authentication
-4. **Phase 4** – Full version + asset downloading
-5. **Phase 5** – Modrinth / CurseForge integration + Fabric/Forge
-6. **Phase 6** – File Manager fully functional + skins + performance options
-7. **Phase 7** – Polish, auto-updates, Realms, etc.
+1. ✅ UI skeleton matching the screenshots
+2. ✅ GitHub Actions multi-platform build
+3. ⏳ Offline account + basic instance creation
+4. ⏳ Microsoft authentication
+5. ⏳ Version & asset downloading
+6. ⏳ Fabric / Forge / Quilt support
+7. ⏳ Modrinth / CurseForge integration
+8. ⏳ File Manager fully functional + skins
 
 ## Disclaimer
 
 This is an independent third-party launcher.  
-It is **not** affiliated with Mojang or Microsoft.  
-You must own a legitimate Minecraft Java Edition license to play online.
+Not affiliated with Mojang or Microsoft.  
+You need a legitimate Minecraft Java Edition license to play online.
 
 ---
 
-Made with ❤️ for the community.  
-UI design goal: **100% visual fidelity** to the beautiful O Launcher Plus style you showed.
+Made for the community. Goal: **100% visual fidelity** to the beautiful launcher style.
